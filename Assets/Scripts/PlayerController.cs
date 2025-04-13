@@ -14,6 +14,8 @@ public class playercontroller : MonoBehaviour
     private Animator pAni;
     private bool isGrounded;
 
+    public bool isGiant = false;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -25,6 +27,12 @@ public class playercontroller : MonoBehaviour
     {
         float moveInput = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+
+        if (moveInput < 0)
+            transform.localScale = new Vector3(1f, 1f, 1f);
+
+        if (moveInput > 0)
+            transform.localScale = new Vector3(-1f, 1f, 1f);
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
 
@@ -47,6 +55,12 @@ public class playercontroller : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        if (collision.CompareTag("GiantITM"))
+        {
+            isGiant = true;
+            Destroy(collision.gameObject);
         }
     }
 }
