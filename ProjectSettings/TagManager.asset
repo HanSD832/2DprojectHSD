@@ -8,6 +8,7 @@ TagManager:
   - Boundary
   - Obstacle
   - GiantITM
+  - SPDup
   layers:
   - Default
   - TransparentFX

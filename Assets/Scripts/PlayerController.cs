@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -42,9 +44,10 @@ public class playercontroller : MonoBehaviour
             pAni.SetTrigger("JumpAction");
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    private async Task OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Respawn"))
+        if (collision.CompareTag("Respawn")&&!isGiant)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
@@ -52,7 +55,7 @@ public class playercontroller : MonoBehaviour
         {
             collision.GetComponent<LevelObject>().MoveToNextLevel();
         }
-        if (collision.CompareTag("Enemy"))
+        if (collision.CompareTag("Enemy")&&!isGiant)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
@@ -61,6 +64,16 @@ public class playercontroller : MonoBehaviour
         {
             isGiant = true;
             Destroy(collision.gameObject);
+            await Task.Delay(5000);
+            isGiant = false;
         }
+
+        if (collision.CompareTag("SPDup"))
+        {
+            moveSpeed = 7f;
+            await Task.Delay(5000);
+            moveSpeed = 5f;
+        }
+        
     }
 }
